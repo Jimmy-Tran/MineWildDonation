@@ -1,0 +1,4 @@
+name: MineWildDonation
+version: '${project.version}'
+main: dev.chiem.minewilddonation.MineWildDonation
+api-version: '1.20'

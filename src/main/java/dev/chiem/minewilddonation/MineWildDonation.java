@@ -1,0 +1,17 @@
+package dev.chiem.minewilddonation;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
+public final class MineWildDonation extends JavaPlugin {
+
+    @Override
+    public void onEnable() {
+        // Plugin startup logic
+
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+    }
+}
