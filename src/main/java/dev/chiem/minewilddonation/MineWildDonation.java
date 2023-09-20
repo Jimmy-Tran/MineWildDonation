@@ -6,12 +6,12 @@ public final class MineWildDonation extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        System.out.println("Enabled MineWildDonation");
 
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        System.out.println("Disabled MineWildDonation");
     }
 }
