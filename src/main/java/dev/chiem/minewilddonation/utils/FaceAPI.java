@@ -19,10 +19,6 @@ public class FaceAPI
     private MineWildDonation plugin;
     private String[] lines;
 
-    public FaceAPI(MineWildDonation plugin, ConfigUtil config) {
-        this.plugin = plugin;
-        this.config = config;
-    }
 
     public FaceAPI(final BufferedImage image, final int height, final char imgChar) {
         this.colors = new Color[] { new Color(0, 0, 0), new Color(0, 0, 170), new Color(0, 170, 0), new Color(0, 170, 170), new Color(170, 0, 0), new Color(170, 0, 170), new Color(255, 255, 85), new Color(170, 170, 170), new Color(85, 85, 85), new Color(85, 85, 255), new Color(85, 255, 85), new Color(85, 255, 255), new Color(255, 85, 85), new Color(255, 85, 255), new Color(255, 170, 0), new Color(255, 255, 255) };
@@ -156,7 +152,7 @@ public class FaceAPI
         return this.lines;
     }
 
-    public void sendToPlayer(final String player, double donationAmount) {
+    public void sendToPlayer(MineWildDonation plugin, ConfigUtil config, final String player, double donationAmount) {
         List<String> body = config.getGoalBodyMessages();
         int progressPercentage = new DonationProgress(plugin.getDataFolder(), config, plugin).getProgressPercentage();
         String progressBar = ProgressBar.getProgressBar(50, progressPercentage, '|', org.bukkit.ChatColor.GOLD, org.bukkit.ChatColor.YELLOW);
