@@ -14,4 +14,17 @@ public final class MineWildDonation extends JavaPlugin {
     public void onDisable() {
         System.out.println("Disabled MineWildDonation");
     }
+
+    public ConfigUtil getConfigUtil() {
+        return config;
+    }
+
+
+    public boolean getPlayerDonated() {
+        return playerDonated;
+    }
+
+    public void setPlayerDonated(boolean b) {
+        playerDonated = b;
+    }
 }

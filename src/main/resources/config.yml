@@ -1,0 +1,44 @@
+# Copyright (c) 2023, Oretheus
+# All rights reserved.
+
+# This source code is licensed under the BSD-style license found in the
+# LICENSE file in the root directory of this source tree.
+
+
+prefix: '&6&lDONTATIONS &8| '
+
+# PLACEHOLDERS: {player}, {amount}, {percentage}, {progress_bar}
+# FOOTER DOESN'T SUPPORT PLACEHOLDERS :)
+donation:
+  goal: 300
+  messages:
+    header: '&6{player} &7has donated &6${amount}&7!'
+    body:
+      - '              &e&lCRATE KEY ALL GOAL'
+      - '                   &e&l{percentage} COMPLETE'
+      - '&e'
+      - '    {progress_bar}'
+    footer: '&7&o( Type &6&ngg&7&o to have a chance to win a prize! )'
+
+  # ONLY {player} PLACEHOLDER WORKS HERE
+  prize_delay: 15 # in seconds
+  winner_text:
+    - '&7'
+    - '&6{player} has won the prize!'
+    - '&7'
+  # WILL BREAK WITHOUT {player}
+  winner_rewards:
+    - xp add {player} 100
+    - key give {player} 1
+
+  goal_message:
+    - '&7'
+    - '&6&lGOAL REACHED: EVERYONE GETS 100 XP!'
+    - '&7'
+
+  # RUN BY CONSOLE
+  goal_rewards:
+    - xp add {player} 100
+    - key give {player} 2
+
+# Contact Oretheus with any bugs or suggestions!
