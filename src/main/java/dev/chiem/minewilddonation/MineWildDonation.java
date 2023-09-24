@@ -15,10 +15,6 @@ public final class MineWildDonation extends JavaPlugin {
         System.out.println("Disabled MineWildDonation");
     }
 
-    public ConfigUtil getConfigUtil() {
-        return config;
-    }
-
 
     public boolean getPlayerDonated() {
         return playerDonated;

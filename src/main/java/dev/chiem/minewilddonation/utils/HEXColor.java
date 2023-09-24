@@ -19,7 +19,6 @@ public class HEXColor {
         return list.stream().map(HEXColor::hex).map(HEXColor::parse).collect(Collectors.toList());
     }
 
-
     public static List<String> parse(final List<String> list) {
         return list.stream().map(HEXColor::hex).map(HEXColor::parse).collect(Collectors.toList());
     }
@@ -29,8 +28,13 @@ public class HEXColor {
     }
 
     public static String parse(final String s) {
-        return ChatColor.translateAlternateColorCodes('&', s);
+        // First, replace hex color codes
+        String hexReplaced = hex(s);
+
+        // Then, replace other color codes
+        return ChatColor.translateAlternateColorCodes('&', hexReplaced);
     }
+
 
     public static String hex(String s) {
         Matcher match = hexPattern.matcher(s);

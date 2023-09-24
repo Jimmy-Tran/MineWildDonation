@@ -12,13 +12,12 @@ prefix: '&6&lDONTATIONS &8| '
 donation:
   goal: 300
   messages:
-    header: '&6{player} &7has donated &6${amount}&7!'
-    body:
+      - '&#FBB927{player} &#BEBEBEhas donated &#FBB927${amount}&#BEBEBE!'
       - '              &e&lCRATE KEY ALL GOAL'
       - '                   &e&l{percentage} COMPLETE'
       - '&e'
       - '    {progress_bar}'
-    footer: '&7&o( Type &6&ngg&7&o to have a chance to win a prize! )'
+      - '&7&o( Type &6&ngg&7&o to have a chance to win a prize! )'
 
   # ONLY {player} PLACEHOLDER WORKS HERE
   prize_delay: 15 # in seconds
@@ -40,5 +39,3 @@ donation:
   goal_rewards:
     - xp add {player} 100
     - key give {player} 2
-
-# Contact Oretheus with any bugs or suggestions!

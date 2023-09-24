@@ -1,6 +1,7 @@
 package dev.chiem.minewilddonation.utils;
 
 
+import com.sun.org.apache.xerces.internal.xs.StringList;
 import dev.chiem.minewilddonation.MineWildDonation;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -9,31 +10,38 @@ import java.awt.geom.AffineTransform;
 import net.md_5.bungee.api.ChatColor;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.util.Iterator;
 import java.util.List;
 
 public class FaceAPI
 {
     private static final char TRANSPARENT_CHAR = ' ';
     private Color[] colors = null;
-    private ConfigUtil config;
     private MineWildDonation plugin;
     private String[] lines;
+    public ProgressBar progressbar;
 
 
-    public FaceAPI(final BufferedImage image, final int height, final char imgChar) {
+    public FaceAPI(MineWildDonation plugin,  final BufferedImage image, final int height, final char imgChar) {
         this.colors = new Color[] { new Color(0, 0, 0), new Color(0, 0, 170), new Color(0, 170, 0), new Color(0, 170, 170), new Color(170, 0, 0), new Color(170, 0, 170), new Color(255, 255, 85), new Color(170, 170, 170), new Color(85, 85, 85), new Color(85, 85, 255), new Color(85, 255, 85), new Color(85, 255, 255), new Color(255, 85, 85), new Color(255, 85, 255), new Color(255, 170, 0), new Color(255, 255, 255) };
         final ChatColor[][] chatColors = this.toChatColorArray(image, height);
         this.lines = this.toImgMessage(chatColors, imgChar);
+        this.progressbar = new ProgressBar();
+        this.plugin = plugin;
     }
 
-    public FaceAPI(final ChatColor[][] chatColors, final char imgChar) {
+    public FaceAPI(MineWildDonation plugin, final ChatColor[][] chatColors, final char imgChar) {
         this.colors = new Color[] { new Color(0, 0, 0), new Color(0, 0, 170), new Color(0, 170, 0), new Color(0, 170, 170), new Color(170, 0, 0), new Color(170, 0, 170), new Color(255, 255, 85), new Color(170, 170, 170), new Color(85, 85, 85), new Color(85, 85, 255), new Color(85, 255, 85), new Color(85, 255, 255), new Color(255, 85, 85), new Color(255, 85, 255), new Color(255, 170, 0), new Color(255, 255, 255) };
         this.lines = this.toImgMessage(chatColors, imgChar);
+        this.progressbar = new ProgressBar();
+        this.plugin = plugin;
     }
 
-    public FaceAPI(final String... imgLines) {
+    public FaceAPI(MineWildDonation plugin, final String... imgLines) {
         this.colors = new Color[] { new Color(0, 0, 0), new Color(0, 0, 170), new Color(0, 170, 0), new Color(0, 170, 170), new Color(170, 0, 0), new Color(170, 0, 170), new Color(255, 255, 85), new Color(170, 170, 170), new Color(85, 85, 85), new Color(85, 85, 255), new Color(85, 255, 85), new Color(85, 255, 255), new Color(255, 85, 85), new Color(255, 85, 255), new Color(255, 170, 0), new Color(255, 255, 255) };
         this.lines = imgLines;
+        this.progressbar = new ProgressBar();
+        this.plugin = plugin;
     }
 
     public FaceAPI appendText(final String... text) {
@@ -152,19 +160,25 @@ public class FaceAPI
         return this.lines;
     }
 
-    public void sendToPlayer(MineWildDonation plugin, ConfigUtil config, final String player, double donationAmount) {
-        List<String> body = config.getGoalBodyMessages();
-        int progressPercentage = new DonationProgress(plugin.getDataFolder(), config, plugin).getProgressPercentage();
-        String progressBar = ProgressBar.getProgressBar(50, progressPercentage, '|', org.bukkit.ChatColor.GOLD, org.bukkit.ChatColor.YELLOW);
-        DonationProgress progressManager = new DonationProgress(plugin.getDataFolder(), config, plugin);
-        progressManager.increaseDonation(donationAmount);
-        body.replaceAll(line -> replacePlaceholders(line, player, donationAmount, progressPercentage, progressBar));
-        int count = 0;
-        for (final String line : this.lines) {
+
+    public void sendToPlayer(List<String> stringslist, String playerName, int donationAmount) {
+        String[] innerLines = this.lines;
+        String[] outerLines = stringslist.toArray(new String[stringslist.size()]);
+
+        int maxLength = Math.max(innerLines.length, outerLines.length);
+
+        for (int i = 0; i < maxLength; i++) {
+            String innerLine = i < innerLines.length ? innerLines[i] : "";
+            String outerLine = i < outerLines.length ? outerLines[i] : "";
+
+            String replacedMessage = outerLine
+                    .replace("{player}", playerName)
+                    .replace("{amount}", String.valueOf(donationAmount))
+                    .replace("{progress_bar}", progressbar.getProgressBar(20, 100, 50, '|', org.bukkit.ChatColor.GREEN, org.bukkit.ChatColor.RED) + "§8]");
+
             for (Player p : Bukkit.getOnlinePlayers()) {
-                p.sendMessage(line + "        " + body.get(count));
+                p.sendMessage(innerLine + " " + HEXColor.parse(replacedMessage));
             }
-            count++;
         }
     }
     private String replacePlaceholders(String input, String playerName, double donationAmount, int progressPercentage, String progressBar) {
